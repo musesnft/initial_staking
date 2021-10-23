@@ -221,3 +221,24 @@ contract MusesNFT Staking {
         return user.amount;
     }
 }
+uint256 pending = user.amount.mul(poolInfo.accRewardPerShare).div(
+            PER_SHARE_SIZE).sub(user.rewardDebt);
+        uint256 rewardTotal = user.rewardAmount.add(pending);
+
+        uint256 balance = mssToken.balanceOf(address(this));
+        require(balance.sub(rewardTotal) >= poolInfo.totalBalance, "Only claim rewards");
+        MusesMSSToken.transfer(_who, rewardTotal);
+
+        user.rewardAmount = 0;
+        user.rewardDebt = user.amount.mul(poolInfo.accRewardPerShare).div(PER_SHARE_SIZE);
+
+        emit Claim(_who, rewardTotal);
+
+        return rewardTotal;
+    }
+
+    function getUserStakedAmount(address _who) external override view returns(uint256) {
+        UserInfo storage user = userInfo[_who];
+        return user.amount;
+    }
+}
