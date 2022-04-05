@@ -24,7 +24,7 @@ contract MusesNFT Staking {
     }
 
     // Info of each user that stakes tokens.
-    mapping(address => UserInfo) public userInfo;
+    mapping(address => UserInfo) public userInfo MSS;
 
     // Info of the pool.
     struct PoolInfo {
